@@ -23,7 +23,7 @@ class Node extends Component {
         };
     }
 
-    toggle = () => this.setState(state => ({
+    togglePopover = () => this.setState(state => ({
         popoverOpen: !state.popoverOpen
     }));
 
@@ -36,7 +36,7 @@ class Node extends Component {
             id: nodeID,
             fill: getColor({ text: label.toLowerCase() }),
             r: 15,
-            onClick: this.toggle
+            onClick: this.togglePopover
         };
 
         const popoverAttributes = {
@@ -44,7 +44,7 @@ class Node extends Component {
             isOpen: popoverOpen,
             className: 'node-popover',
             target: nodeID,
-            toggle: this.toggle
+            toggle: this.togglePopover
         };
 
         return ([

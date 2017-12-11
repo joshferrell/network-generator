@@ -11,11 +11,7 @@ import Node from './node.comp';
 
 storiesOf('Widgets/Node', module)
     .addDecorator(withKnobs)
-    .add('simple node', withInfo(`
-            # Node
-
-            Example
-    `)(() => {
+    .add('simple node', withInfo()(() => {
         const graphData = {
             nodes: [{
                 id: number('Node ID', 1),
