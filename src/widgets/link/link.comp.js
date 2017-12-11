@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Color from 'color';
 import randomColor from 'random-material-color';
 import blender from 'color-blend';
+import './link.css';
 
 const getColor = (label, a) => {
     const color = randomColor.getColor({ text: label.toLowerCase() });
@@ -10,32 +11,38 @@ const getColor = (label, a) => {
 };
 
 const blendColor = (label1, label2) => {
-    const sourceColor = getColor(label1, .4);
-    const targetColor = getColor(label2, .8);
-    console.log(sourceColor, targetColor);
+    const sourceColor = getColor(label1, 0.4);
+    const targetColor = getColor(label2, 0.8);
 
-    const blend = blender.normal(sourceColor, targetColor);
-    delete blend.a;
-    console.log(blend);
+    const { a, ...blend } = blender.normal(sourceColor, targetColor);
     return Color(blend).hex();
 };
 
 const Link = ({ link }) => {
     const {
-        source, target, hovering, weight
+        source, target, hovering, weight, label
     } = link;
 
-    const hoverStroke = blendColor(source.label, target.label);
-    console.log(hoverStroke);
+    let stroke = '#2B2B2B';
+    const hoverStroke = label ?
+        randomColor.getColor({ text: label.toLowerCase() }) :
+        blendColor(source.label, target.label);
+
+    if (label) {
+        stroke = hoverStroke;
+    } else if (hovering) {
+        stroke = hoverStroke;
+    }
 
     return (
         <line
+            className="link"
             x1={source.x}
             y1={source.y}
             x2={target.x}
             y2={target.y}
             strokeWidth={hovering ? 5 : 2}
-            stroke={hovering ? hoverStroke : '#2B2B2B'}
+            stroke={stroke}
             strokeOpacity={weight}
         />
     );
@@ -54,10 +61,6 @@ Link.propTypes = {
         hovering: PropTypes.bool,
         weight: PropTypes.number.isRequired
     }).isRequired
-};
-
-Link.defaultProps = {
-    hovering: false
 };
 
 export default Link;

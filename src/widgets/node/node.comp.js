@@ -23,20 +23,27 @@ class Node extends Component {
         };
     }
 
-    togglePopover = () => this.setState(state => ({
-        popoverOpen: !state.popoverOpen
-    }));
+    togglePopover = () => {
+        const { node } = this.props;
+        const { popoverOpen } = this.state;
+        const id = popoverOpen ? null : node.id;
+        this.setState({ popoverOpen: !popoverOpen });
+        node.handleClick(id);
+    };
 
     render = () => {
         const { popoverOpen } = this.state;
-        const { name, label, id } = this.props.node;
+        const {
+            name, label, id, x, y
+        } = this.props.node;
         const nodeID = `node${id}`;
 
         const circleAttributes = {
             id: nodeID,
             fill: getColor({ text: label.toLowerCase() }),
             r: 15,
-            onClick: this.togglePopover
+            onClick: this.togglePopover,
+            className: `node ${popoverOpen && 'node-selected'}`
         };
 
         const popoverAttributes = {
@@ -52,6 +59,10 @@ class Node extends Component {
             <Popover {...popoverAttributes}>
                 <PopoverBody>
                     <strong>{name}:</strong> {label}
+                    <div className="d-flex">
+                        <div className="pr-3">Lat: {y}</div>
+                        <div>Long: {x}</div>
+                    </div>
                 </PopoverBody>
             </Popover>
         ]);

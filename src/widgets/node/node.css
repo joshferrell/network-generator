@@ -1,3 +1,13 @@
 .node-popover {
     text-transform: 'capitalize';
 }
+
+.node {
+    transition: all .3s ease-in-out;
+    stroke-width: 0;
+    stroke: #2b2b2b;
+}
+
+.node-selected {
+    stroke-width: 2;
+}
